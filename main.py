@@ -158,6 +158,12 @@ class NewUiMainWindow(ui_):
                 # print(os.getcwd())
 
                 QMessageBox.about(None, "结果", str(ret[1] + 1) + "：记录成功")
+
+                if self.ser.isOpen():
+                    # input_s = ('open' + str(i) + '\r\n').encode('utf-8')
+                    self.ser.write(0xA1)
+                    self.ser.write(0xA2)
+                    self.ser.write(str(ret[1]))
                 with open("data.txt", "a") as f:  # “a"代表追加内容
                     f.write(
                         "储物柜存物:%d  " % (ret[1] + 1)
@@ -263,7 +269,7 @@ class NewUiMainWindow(ui_):
 
     def port_open(self):
         self.ser.port = self.comboBox.currentText()
-        self.ser.baudrate = 9600
+        self.ser.baudrate = 115200
         self.ser.bytesize = 8
         self.ser.stopbits = 1
         self.ser.parity = "N"
