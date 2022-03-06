@@ -161,9 +161,12 @@ class NewUiMainWindow(ui_):
 
                 if self.ser.isOpen():
                     # input_s = ('open' + str(i) + '\r\n').encode('utf-8')
-                    self.ser.write(0xA1)
-                    self.ser.write(0xA2)
-                    self.ser.write(str(ret[1]))
+                    #self.ser.write((0xA1))
+                    #self.ser.write((0xA2))
+                    #self.ser.write((ret[1]))
+                    send_list = [0xA1, 0xA2, ret[1]]
+                    self.ser.write(bytes(send_list))
+                    print('serial send')
                 with open("data.txt", "a") as f:  # “a"代表追加内容
                     f.write(
                         "储物柜存物:%d  " % (ret[1] + 1)
@@ -206,9 +209,8 @@ class NewUiMainWindow(ui_):
 
                 if self.ser.isOpen():
                     # input_s = ('open' + str(i) + '\r\n').encode('utf-8')
-                    self.ser.write(0xA1)
-                    self.ser.write(0xA2)
-                    self.ser.write(str(i))
+                    send_list = [0xA1, 0xA2,i]
+                    self.ser.write(bytes(send_list))
 
                 QMessageBox.about(
                     None, "人脸识别结果:", "\n        识别到储物柜%d号        \n " % (i + 1)
@@ -272,7 +274,7 @@ class NewUiMainWindow(ui_):
         self.ser.baudrate = 115200
         self.ser.bytesize = 8
         self.ser.stopbits = 1
-        self.ser.parity = "N"
+        #self.ser.parity = "N"
 
         try:
             self.ser.open()
